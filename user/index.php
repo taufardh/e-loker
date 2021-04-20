@@ -122,6 +122,21 @@
                                                                     </select> -->
                                                                     <input type="text" name="konsentrasi" id="konsentrasi" class="form-control" value="<?= $a['konsentrasi']; ?>" placeholder="Masukan Bidang Keahlian">
                                                                 </h5>
+                                                                <label for=""> Posisi Diminati </label>
+                                                                <h5 class="mb-4">
+                                                                    <select class="form-control" id="posisi" name="posisi">
+                                                                        <?php 
+                                                                        $query = mysqli_query($koneksi,"SELECT * FROM tb_posisi"); 
+                                                                        while($minat = mysqli_fetch_array($query)){
+                                                                            if($a['posisi'] == $lok['id_posisi']){
+                                                                                echo "<option value='$minat[id_posisi]' selected> $minat[posisi] </option>";
+                                                                                
+                                                                            }else{
+                                                                                echo "<option value='$minat[id_posisi]'> $minat[posisi] </option>";
+                                                                            }
+                                                                        } ?>
+                                                                    </select>
+                                                                </h5>
                                                             </div>
                                                             <div class="col-md-5">
                                                                 <label for="">Email</label>
@@ -130,6 +145,20 @@
                                                                 <h5 class="mb-4"> <input type="date" name="ttl" value="<?= $a['ttl']; ?>" class="form-control" id=""></h5>
                                                                 <label for=""> Alamat Tempat Tinggal </label>
                                                                 <h5 class="mb-4"><textarea name="alamat" class="form-control"><?= $a['alamat']; ?></textarea> </h5>
+                                                                <label for=""> Kota </label>
+                                                                <h5 class="mb-4">
+                                                                    <select class="form-control" id="lokasi" name="lokasi">
+                                                                        <?php 
+                                                                        $query_l = mysqli_query($koneksi,"SELECT * FROM tb_lokasi"); 
+                                                                        while($lok = mysqli_fetch_array($query_l)){
+                                                                            if($a['kota'] == $lok['id_lokasi']){
+                                                                                echo "<option value='$lok[id_lokasi]' selected> $lok[lokasi] </option>";
+                                                                            }else{
+                                                                                echo "<option value='$lok[id_lokasi]'> $lok[lokasi] </option>";
+                                                                            }
+                                                                        } ?>
+                                                                    </select>
+                                                                </h5>
                                                                 <label for=""> Gaji Yang diinginkan </label>
                                                                 <h5 class="mb-4"> 
                                                                 <div class="input-group">
@@ -427,6 +456,8 @@ if(isset($_POST['ubahprofil'])){
     $id2 = $_POST['id'];
     $nama = $_POST['nama'];
     $alamat = $_POST['alamat'];
+    $posisi = $_POST['posisi'];
+    $lokasi = $_POST['lokasi'];
     $jk = $_POST['jk'];
     $ttl = $_POST['ttl'];
     $agama = $_POST['agama'];
@@ -443,7 +474,7 @@ if(isset($_POST['ubahprofil'])){
     $filename2 = $_FILES['ft_profil']['name'];
 	$ukuran2 = $_FILES['ft_profil']['size'];
 	$ext = pathinfo($filename2, PATHINFO_EXTENSION);
-    $sql1 = mysqli_query($koneksi,"UPDATE tb_user SET nama_user='$nama',gaji='$gaji', ttl='$ttl', alamat='$alamat', jk='$jk',agama='$agama',konsentrasi='$konsentrasi',email='$email' WHERE id_user='$id2'");
+    $sql1 = mysqli_query($koneksi,"UPDATE tb_user SET nama_user='$nama',gaji='$gaji', ttl='$ttl', alamat='$alamat', posisi='$posisi', kota='$lokasi', jk='$jk',agama='$agama',konsentrasi='$konsentrasi',email='$email' WHERE id_user='$id2'");
 
     if($filename1 !== ""){
         if($ukuran < 91044070){		
