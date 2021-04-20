@@ -5,7 +5,6 @@ login admin
 endpoint login admin
 e-loker/admin/
 role user : admin
--------------
 username  : admin@gmail.com
 pass      : admin123
 
