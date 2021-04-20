@@ -47,6 +47,20 @@
                                 <div class="alert alert-danger bg-danger text-white m-4" role="alert">Lowongan ditutup. <a href="lowongan.php" class="text-info float-right">Close</a></div>
                                 <?php endif; endif; ?>
 
+                                <?php
+                                    $ind = 0;
+                                    $data_posisi = mysqli_query($koneksi,"SELECT * FROM tb_posisi"); 
+                                    while($p = mysqli_fetch_array($data_posisi)){
+                                        $arr_posisi[$ind] = $p;
+                                        $ind++;
+                                    }
+                                    $ind = 0;
+                                    $data_lokasi = mysqli_query($koneksi,"SELECT * FROM tb_lokasi"); 
+                                    while($l = mysqli_fetch_array($data_lokasi)){
+                                        $arr_lokasi[$ind] = $l;
+                                        $ind++;
+                                    } 
+                                ?>
                                 <div class="card-block">
                                     <div class="table-responsive">
                                         <a href="tambahLW.php" class="btn btn-primary btn-sm mb-3"> Tambah Lowongan </a>
@@ -55,6 +69,7 @@
                                                 <tr>
                                                     <th>No</th>
                                                     <th>Posisi</th>
+                                                    <th>Lokasi</th>
                                                     <th>Gaji</th>
                                                     <th>Persyaratan</th>
                                                     <th>Jumlah Lowongan</th>
@@ -69,7 +84,20 @@
                                             <tbody>
                                                 <tr>
                                                     <td><?= $no++; ?></td>
-                                                    <td><?= $d['posisi']; ?></td>
+                                                    <td>
+                                                        <?php foreach($arr_posisi as $pos){
+                                                            if($pos['id_posisi'] == $d['posisi']){
+                                                                echo $pos['posisi'];
+                                                            }
+                                                        } ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php foreach($arr_lokasi as $lok){
+                                                            if($lok['id_lokasi'] == $d['lokasi']){
+                                                                echo $lok['lokasi'];
+                                                            }
+                                                        } ?>
+                                                    </td>
                                                     <td>Rp.<?= number_format("$d[gaji]", 0, ",", ".");?>,-</td>
                                                     <td><?= nl2br($d['persyaratan']); ?></td>
                                                     <td><?= $d['lowongan']; ?> Orang</td>

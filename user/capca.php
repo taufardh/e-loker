@@ -16,7 +16,7 @@ if(array_key_exists('submit_form',$_POST))
     /* The response given by the form being submitted */
     $response_key = $_POST&#91;'g-recaptcha-response'];
     /* Send the data to the API for a response */
-    $response = file_get_contents($url.'?secret='.$private_key.'&amp;response='.$response_key.'&amp;remoteip='.$_SERVER&#91;'REMOTE_ADDR']);
+    $response = file_get_contents($url.'?secret='.$private_key.'&amp;response='.$response_key.'&amp;remoteip='.$_SERVER['REMOTE_ADDR']);
     /* json decode the response to an object */
     $response = json_decode($response);
 

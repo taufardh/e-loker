@@ -226,6 +226,22 @@ if($_SESSION['role'] == "admin"){
                                             <span class="pcoded-mtext">Data Kategori</span>
                                         </a>
                                     </li>
+                                    <li class="<?php if($page == "posisi") echo "active"; ?>">
+                                        <a href="posisi.php" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon">
+                                                <i class="feather icon-briefcase"></i>
+                                            </span>
+                                            <span class="pcoded-mtext">Data Posisi</span>
+                                        </a>
+                                    </li>
+                                    <li class="<?php if($page == "lokasi") echo "active"; ?>">
+                                        <a href="lokasi.php" class="waves-effect waves-dark">
+                                            <span class="pcoded-micon">
+                                                <i class="feather icon-briefcase"></i>
+                                            </span>
+                                            <span class="pcoded-mtext">Data Lokasi</span>
+                                        </a>
+                                    </li>
                                     <?php } ?>
                                     <?php if($_SESSION['role'] == 'perusahaan'){
                                         ?>

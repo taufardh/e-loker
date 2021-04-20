@@ -47,8 +47,27 @@
                                         <div class="form-group row">
                                             <label class="col-sm-2 col-form-label">Posisi</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" autocomplete="off" name="posisi"
-                                                    placeholder="Masukan Posisi Pekerjaan">
+                                                <!-- <input type="text" class="form-control" autocomplete="off" name="posisi" -->
+                                                <select class="form-control" autocomplete="off" name="posisi">
+                                                    <?php 
+                                                    $data = mysqli_query($koneksi,"SELECT * FROM tb_posisi"); 
+                                                    while($d = mysqli_fetch_array($data)){ ?>
+                                                        <option value="<?php echo $d['id_posisi'] ?>"><?php echo $d['posisi'] ?></option>
+                                                    <?php } ?>
+                                                </select>
+                                                    <!-- placeholder="Masukan Posisi Pekerjaan"> -->
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label">Lokasi</label>
+                                            <div class="col-sm-10">
+                                                <select class="form-control" autocomplete="off" name="lokasi">
+                                                    <?php 
+                                                    $data = mysqli_query($koneksi,"SELECT * FROM tb_lokasi"); 
+                                                    while($d = mysqli_fetch_array($data)){ ?>
+                                                        <option value="<?php echo $d['id_lokasi'] ?>"><?php echo $d['lokasi'] ?></option>
+                                                    <?php } ?>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -109,11 +128,12 @@ include '../koneksi.php';
 if(isset($_POST['tambah'])){
     $id     = $_POST['id'];
     $posisi = $_POST['posisi'];
+    $lokasi = $_POST['lokasi'];
     $gaji   = $_POST['gaji'];
     $persyaratan = $_POST['persyaratan'];
     $deskripsi   = $_POST['deskripsi'];
     $jumlah      = $_POST['jumlah'];
-    $sql = mysqli_query($koneksi,"INSERT INTO tb_lowongan VALUES('','$id','$gaji','$posisi','$deskripsi','$persyaratan','$date','buka','$jumlah')");
+    $sql = mysqli_query($koneksi,"INSERT INTO tb_lowongan VALUES('','$id','$gaji','$posisi','$lokasi','$deskripsi','$persyaratan','$date','buka','$jumlah')");
     if($sql){
         header('location:lowongan.php?pesan=berhasil');
     }else{
