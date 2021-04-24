@@ -128,11 +128,26 @@
                                                                         <?php 
                                                                         $query = mysqli_query($koneksi,"SELECT * FROM tb_posisi"); 
                                                                         while($minat = mysqli_fetch_array($query)){
-                                                                            if($a['posisi'] == $lok['id_posisi']){
+                                                                            if($a['posisi'] == $minat['id_posisi']){
                                                                                 echo "<option value='$minat[id_posisi]' selected> $minat[posisi] </option>";
                                                                                 
                                                                             }else{
                                                                                 echo "<option value='$minat[id_posisi]'> $minat[posisi] </option>";
+                                                                            }
+                                                                        } ?>
+                                                                    </select>
+                                                                </h5>
+                                                                <label for=""> Jenis Perusahaan Diminati </label>
+                                                                <h5 class="mb-4">
+                                                                    <select class="form-control" id="kategori" name="kategori">
+                                                                        <?php 
+                                                                        $query = mysqli_query($koneksi,"SELECT * FROM tb_kategori"); 
+                                                                        while($kat = mysqli_fetch_array($query)){
+                                                                            if($a['kategori'] == $kat['id_kategori']){
+                                                                                echo "<option value='$kat[id_kategori]' selected> $kat[kategori] </option>";
+                                                                                
+                                                                            }else{
+                                                                                echo "<option value='$kat[id_kategori]'> $kat[kategori] </option>";
                                                                             }
                                                                         } ?>
                                                                     </select>
@@ -304,6 +319,26 @@
                                                                 <h5 class="mb-4"> <?php if($a['agama'] == "" ){echo "--------";}else{echo $a['agama'];} ?> </h5>
                                                                 <label for=""> Konsentrasi Dalam Bidang </label>
                                                                 <h5 class="mb-4"> <?php if( $a['konsentrasi'] == "" ){echo "--------";}else{ echo $a['konsentrasi'];} ?></h5>
+                                                                <label for=""> Posisi Diminati </label>
+                                                                <h5 class="mb-4"> 
+                                                                    <?php 
+                                                                    $query = mysqli_query($koneksi,"SELECT * FROM tb_posisi"); 
+                                                                    while($minat = mysqli_fetch_array($query)){
+                                                                        if($a['posisi'] == $minat['id_posisi']){
+                                                                            echo $minat['posisi'];
+                                                                        }
+                                                                    } ?>
+                                                                </h5>
+                                                                <label for=""> Jenis Perusahaan Diminati </label>
+                                                                <h5 class="mb-4"> 
+                                                                    <?php 
+                                                                    $query = mysqli_query($koneksi,"SELECT * FROM tb_kategori"); 
+                                                                    while($kat = mysqli_fetch_array($query)){
+                                                                        if($a['kategori'] == $kat['id_kategori']){
+                                                                            echo $kat['kategori'];
+                                                                        }
+                                                                    } ?>
+                                                                </h5>
                                                             </div>
                                                             <div class="col-md-5">
                                                                 <label for="">Email</label>
@@ -349,6 +384,16 @@
                                                                 <h5 class="mb-4"><?php echo $hasill; ?></h5>
                                                                 <label for=""> Alamat Tempat Tinggal </label>
                                                                 <h5 class="mb-4"><?php if( $a['alamat'] == "" ){ echo "--------";}else{echo $a['alamat'];} ?> </h5>
+                                                                <label for=""> Kota </label>
+                                                                <h5 class="mb-4">
+                                                                    <?php 
+                                                                    $query_l = mysqli_query($koneksi,"SELECT * FROM tb_lokasi"); 
+                                                                    while($lok = mysqli_fetch_array($query_l)){
+                                                                        if($a['kota'] == $lok['id_lokasi']){
+                                                                            echo $lok['lokasi'];
+                                                                        }
+                                                                    } ?>
+                                                                </h5>
                                                                 <label for=""> Gaji Yang diinginkan </label>
                                                                 <h5 class="mb-4"> <?php if( $a['gaji'] == 0 ){echo "--------";}else{echo "IDR ".number_format("$a[gaji]", 0, ",", ".").", -"; } ?> </h5>
                                                             </div>
@@ -458,6 +503,7 @@ if(isset($_POST['ubahprofil'])){
     $alamat = $_POST['alamat'];
     $posisi = $_POST['posisi'];
     $lokasi = $_POST['lokasi'];
+    $kategori = $_POST['kategori'];
     $jk = $_POST['jk'];
     $ttl = $_POST['ttl'];
     $agama = $_POST['agama'];
@@ -474,7 +520,7 @@ if(isset($_POST['ubahprofil'])){
     $filename2 = $_FILES['ft_profil']['name'];
 	$ukuran2 = $_FILES['ft_profil']['size'];
 	$ext = pathinfo($filename2, PATHINFO_EXTENSION);
-    $sql1 = mysqli_query($koneksi,"UPDATE tb_user SET nama_user='$nama',gaji='$gaji', ttl='$ttl', alamat='$alamat', posisi='$posisi', kota='$lokasi', jk='$jk',agama='$agama',konsentrasi='$konsentrasi',email='$email' WHERE id_user='$id2'");
+    $sql1 = mysqli_query($koneksi,"UPDATE tb_user SET nama_user='$nama',gaji='$gaji', ttl='$ttl', alamat='$alamat', posisi='$posisi', kota='$lokasi', kategori='$kategori', jk='$jk',agama='$agama',konsentrasi='$konsentrasi',email='$email' WHERE id_user='$id2'");
 
     if($filename1 !== ""){
         if($ukuran < 91044070){		

@@ -6,7 +6,7 @@ if(!isset($_SESSION['login'])){
     $login = "sudah";
 }
 $id = $_GET['id'];
-$data = mysqli_query($koneksi,"SELECT * FROM tb_lowongan INNER JOIN tb_perusahaan ON tb_lowongan.id_perusahaan=tb_perusahaan.id_perusahaan INNER JOIN tb_kategori ON tb_kategori.id_kategori=tb_perusahaan.id_kategori WHERE tb_lowongan.id_lowongan='$id'");
+$data = mysqli_query($koneksi,"SELECT * FROM tb_lowongan INNER JOIN tb_perusahaan ON tb_lowongan.id_perusahaan=tb_perusahaan.id_perusahaan INNER JOIN tb_kategori ON tb_kategori.id_kategori=tb_perusahaan.id_kategori INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi WHERE tb_lowongan.id_lowongan='$id'");
 $d    = mysqli_fetch_assoc($data);
 ?>
 <?php include 'header.php'; ?>
@@ -65,18 +65,30 @@ $d    = mysqli_fetch_assoc($data);
                                                         <br>
                                                         <hr>
                                                         <div class="row py-4">
-                                                            <div class="col-md-4">
+                                                            <div class="col-md-2">
                                                                 <small class="text-secondary">Jumlah Lowongan  :
                                                                 </small><br>
                                                                 <strong class="text-uppercase"><span class="font-weight-bold"><?= $d['lowongan']; ?></span> Orang </strong>
                                                             </div>
-                                                            <div class="col-md-4">
+                                                            <div class="col-md-2">
                                                                 <small class="text-secondary">Status Lowongan
                                                                 </small><br>
                                                                 <strong class="font-weight-bold "><a href="#"
                                                                         class="text-dark">DI<?= strtoUpper($d['status']); ?></a></strong>
                                                             </div>
-                                                            <div class="col-md-4">
+                                                            <div class="col-md-2">
+                                                                <small class="text-secondary">Penempatan
+                                                                </small><br>
+                                                                <strong class="font-weight-bold "><a href="#"
+                                                                        class="text-dark"><?= strtoUpper($d['lokasi']); ?></a></strong>
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <small class="text-secondary">Posisi
+                                                                </small><br>
+                                                                <strong class="font-weight-bold "><a href="#"
+                                                                        class="text-dark"><?= strtoUpper($d['posisi']); ?></a></strong>
+                                                            </div>
+                                                            <div class="col-md-2">
                                                                 <small class="text-secondary">Gaji : </small><br>
                                                                 <?php if( $d['gaji'] == "0" ){?>
                                                                     <strong class="font-weight-bold">Gaji Dirahasiakan</strong>

@@ -1,30 +1,34 @@
 <?php include 'header.php';?>
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.css" />
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 <?php
 if(isset($_GET['nama'] )){
     $nama     = $_GET['nama'];
     $kategori = $_GET['kategori'];
     $nearby   = $_GET['nearby'];
     if($nearby == "" && $kategori == "" && $nama == ""  ){
-        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan");
+        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi");
     }elseif($nearby !== "" && $kategori !== "" && $nama !== ""  ){
-        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan WHERE tb_perusahaan.lokasi_perusahaan LIKE '%$nearby%' AND tb_lowongan.posisi LIKE '%$nama%' AND tb_kategori.kategori LIKE '%$kategori%'");
+        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi WHERE tb_perusahaan.lokasi_perusahaan LIKE '%$nearby%' AND tb_lowongan.posisi LIKE '%$nama%' AND tb_kategori.kategori LIKE '%$kategori%'");
     }elseif($nearby == "" && $kategori == "" ){
-        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan WHERE tb_lowongan.posisi LIKE '%$nama%'");
+        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi WHERE tb_lowongan.posisi LIKE '%$nama%'");
     }elseif($nama == "" && $nearby == "" ){
-        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan WHERE tb_kategori.kategori='$kategori'");
+        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi WHERE tb_kategori.kategori='$kategori'");
     }elseif($nama == "" && $kategori == "" ){
-        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan WHERE tb_perusahaan.lokasi_perusahaan LIKE '%$nearby%'");
+        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi WHERE tb_perusahaan.lokasi_perusahaan LIKE '%$nearby%'");
     }elseif($nearby == ""){
-        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan WHERE tb_lowongan.posisi LIKE '%$nama%' AND tb_kategori.kategori='$kategori'");
+        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi WHERE tb_lowongan.posisi LIKE '%$nama%' AND tb_kategori.kategori='$kategori'");
     }elseif($kategori == ""){
-        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan WHERE tb_perusahaan.lokasi_perusahaan LIKE '%$nearby%' AND tb_lowongan.posisi LIKE '%$nama%'");
+        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi WHERE tb_perusahaan.lokasi_perusahaan LIKE '%$nearby%' AND tb_lowongan.posisi LIKE '%$nama%'");
     }elseif($nama == ""){
-        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan WHERE tb_perusahaan.lokasi_perusahaan LIKE '%$nearby%' AND tb_kategori.kategori='$kategori'");
+        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi WHERE tb_perusahaan.lokasi_perusahaan LIKE '%$nearby%' AND tb_kategori.kategori='$kategori'");
     }
 }else{
-    $sql = mysqli_query($koneksi,"SELECT * FROM tb_lowongan INNER JOIN tb_perusahaan ON tb_lowongan.id_perusahaan=tb_perusahaan.id_perusahaan ORDER BY id_lowongan DESC"); 
+    $sql = mysqli_query($koneksi,"SELECT * FROM tb_lowongan INNER JOIN tb_perusahaan ON tb_lowongan.id_perusahaan=tb_perusahaan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi ORDER BY id_lowongan DESC"); 
 }
 ?>
+<style>
+</style>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <div class="container">
     <div class="pcoded-content">
@@ -85,6 +89,53 @@ if(isset($_GET['nama'] )){
             </div>
         </div>
     </div>
+    <div class="pcoded-content">
+        <div class="page-body">
+            <div class="row">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Rekomendasi</h5>
+                    </div>
+                    <div class="card-block">
+                        <!-- Slider main container -->
+                        <div class="swiper-container">
+                            <!-- Additional required wrapper -->
+                            <div class="swiper-wrapper">
+                                <!-- Slides -->
+                                <?php $work = mysqli_query($koneksi,"SELECT * FROM tb_lowongan INNER JOIN tb_perusahaan ON tb_lowongan.id_perusahaan=tb_perusahaan.id_perusahaan ORDER BY id_lowongan DESC"); 
+                                while($w = mysqli_fetch_array($work)){ ?>
+                                    <div class="swiper-slide">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title"><?php echo $w['nama_perusahaan']; ?></h5>
+                                                <p class="card-text"><?php echo $w['gaji']; ?></p>
+                                                <p><?php echo $w['lokasi']; ?></p>
+                                                <p><?php echo $w['posisi']; ?></p>
+                                                <p><?php echo $w['gaji']; ?></p>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                <?php } ?>
+                                <!-- <div class="swiper-slide"><img class="img-fluid width-100" src="https://colorlib.com/polygon/admindek/files/assets/images/task/task-u3.jpg" alt="Card image cap"></div>
+                                <div class="swiper-slide"><img class="img-fluid width-100" src="https://colorlib.com/polygon/admindek/files/assets/images/task/task-u3.jpg" alt="Card image cap"></div>
+                                <div class="swiper-slide"><img class="img-fluid width-100" src="https://colorlib.com/polygon/admindek/files/assets/images/task/task-u3.jpg" alt="Card image cap"></div> -->
+
+                            </div>
+                            <!-- If we need pagination -->
+                            <div class="swiper-pagination"></div>
+
+                            <!-- If we need navigation buttons -->
+                            <!-- <div class="swiper-button-prev"></div>
+                            <div class="swiper-button-next"></div> -->
+
+                            <!-- If we need scrollbar -->
+                            <div class="swiper-scrollbar"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="pcoded-inner-content">
         <div class="main-body">
             <div class="page-wrapper">
@@ -100,8 +151,8 @@ if(isset($_GET['nama'] )){
                                     } ?>
                                         <?php 
                                                                 
-                                                                $kerja = mysqli_query($koneksi,"SELECT * FROM tb_lowongan INNER JOIN tb_perusahaan ON tb_lowongan.id_perusahaan=tb_perusahaan.id_perusahaan ORDER BY id_lowongan DESC"); 
-                                                                while($k = mysqli_fetch_array($sql)){ ?>
+                                            $kerja = mysqli_query($koneksi,"SELECT * FROM tb_lowongan INNER JOIN tb_perusahaan ON tb_lowongan.id_perusahaan=tb_perusahaan.id_perusahaan ORDER BY id_lowongan DESC"); 
+                                            while($k = mysqli_fetch_array($sql)){ ?>
                                         <!-- CONTENT -->
                                         <div class="col-md-2">
                                             <div class="text-center my-4">
@@ -113,17 +164,17 @@ if(isset($_GET['nama'] )){
                                             <ul>
                                                 <div class="text-center float-right">
                                                     <?php if( $login == "belum" ){
-                                                                                echo "<a href='../loginn.php?pesan=logindulu' class='btn btn-outline-primary btn-sm px-3'><i style='font-size: 16px; margin-left:5px;' class='far fa-star'></i></a>";
-                                                                        }else{ ?>
+                                                            echo "<a href='../loginn.php?pesan=logindulu' class='btn btn-outline-primary btn-sm px-3'><i style='font-size: 16px; margin-left:5px;' class='far fa-star'></i></a>";
+                                                    }else{ ?>
                                                     <?php 
                                                                             
-                                                                            $cekcek = mysqli_query($koneksi,"SELECT * FROM tb_simpan WHERE id_lowongan='$k[id_lowongan]' AND id_user='$a[id_user]'");
-                                                                            if(mysqli_num_rows($cekcek) > 0){
-                                                                                echo "<a href='aksi.php?condition=unsave&idd=$k[id_lowongan]&id=$a[id_user]&posisi=kerja' class='btn btn-outline-primary btn-sm px-3'><i style='font-size: 16px; margin-left:5px;' class='fa fa-star'></i></a>";
-                                                                            }else{
-                                                                                echo "<a href='aksi.php?condition=save&idd=$k[id_lowongan]&id=$a[id_user]&posisi=kerja' class='btn btn-outline-primary btn-sm px-3'><i style='font-size: 16px; margin-left:5px;' class='far fa-star'></i></a>";
-                                                                            }}
-                                                                            ?></div>
+                                                    $cekcek = mysqli_query($koneksi,"SELECT * FROM tb_simpan WHERE id_lowongan='$k[id_lowongan]' AND id_user='$a[id_user]'");
+                                                    if(mysqli_num_rows($cekcek) > 0){
+                                                        echo "<a href='aksi.php?condition=unsave&idd=$k[id_lowongan]&id=$a[id_user]&posisi=kerja' class='btn btn-outline-primary btn-sm px-3'><i style='font-size: 16px; margin-left:5px;' class='fa fa-star'></i></a>";
+                                                    }else{
+                                                        echo "<a href='aksi.php?condition=save&idd=$k[id_lowongan]&id=$a[id_user]&posisi=kerja' class='btn btn-outline-primary btn-sm px-3'><i style='font-size: 16px; margin-left:5px;' class='far fa-star'></i></a>";
+                                                    }}
+                                                    ?></div>
                                                 <li>
                                                     <h3 class="font-weight-bold"><?= $k['posisi']; ?></h3>
                                                 </li><br>
@@ -131,7 +182,7 @@ if(isset($_GET['nama'] )){
                                                     <div class="h6"><a href="#"
                                                             class="text-primary h6 font-weight-bold"><?= $k['nama_perusahaan']; ?></a>
                                                         <i class="fas fa-map-marker-alt"></i>
-                                                        <?= $k['lokasi_perusahaan']; ?></div>
+                                                        <?= $k['lokasi']; ?></div>
                                                 </li><br>
                                                 <li>
                                                     <div class="font-weight-normal">
@@ -229,10 +280,35 @@ if(isset($_GET['nama'] )){
     integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
     crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://unpkg.com/swiper/swiper-bundle.js"></script>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <script>
     $(".select2").select2({
         placeholder: "Contoh : Garut",
         allowClear: true
     });
+
+const swiper = new Swiper('.swiper-container', {
+  // Optional parameters
+  direction: 'horizontal',
+  slidesPerView: 3,
+  loop: true,
+
+  // If we need pagination
+  pagination: {
+    el: '.swiper-pagination',
+  },
+
+  // Navigation arrows
+//   navigation: {
+//     nextEl: '.swiper-button-next',
+//     prevEl: '.swiper-button-prev',
+//   },
+
+  // And if we need scrollbar
+  scrollbar: {
+    el: '.swiper-scrollbar',
+  },
+});
 </script>
 <?php include 'footer.php';  ?>
