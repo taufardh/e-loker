@@ -1,6 +1,5 @@
 <?php include 'header.php';?>
-<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.css" />
-<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+<link rel="stylesheet" type="text/css" href="assets/css/swiper.min.css">
 <?php
 if(isset($_GET['nama'] )){
     $nama     = $_GET['nama'];
@@ -102,20 +101,49 @@ if(isset($_GET['nama'] )){
                             <!-- Additional required wrapper -->
                             <div class="swiper-wrapper">
                                 <!-- Slides -->
-                                <?php $work = mysqli_query($koneksi,"SELECT * FROM tb_lowongan INNER JOIN tb_perusahaan ON tb_lowongan.id_perusahaan=tb_perusahaan.id_perusahaan ORDER BY id_lowongan DESC"); 
-                                while($w = mysqli_fetch_array($work)){ ?>
+                                <?php 
+                                $favorit = array();
+                                $get_fav = mysqli_query($koneksi, "select id_lowongan, count(id_lowongan) as jml from tb_simpan group by id_lowongan order by jml desc limit 15"); 
+                                while($res_fav = mysqli_fetch_array($get_fav)){ 
+                                    array_push($favorit, $res_fav['id_lowongan']);
+                                }  
+                                ?>
+                                <?php 
+                                $qwry = '';
+                                $qwry .= 'select * from tb_lowongan ';
+                                $qwry .= 'inner join tb_perusahaan on tb_lowongan.id_perusahaan = tb_perusahaan.id_perusahaan ';
+                                $qwry .= 'inner join tb_kategori on tb_perusahaan.id_kategori = tb_kategori.id_kategori ';
+                                $qwry .= 'inner join tb_posisi on tb_lowongan.posisi = tb_posisi.id_posisi ';
+                                $qwry .= 'inner join tb_lokasi on tb_lowongan.lokasi = tb_lokasi.id_lokasi';
+                                $rekomendasi = mysqli_query($koneksi, $qwry); 
+                                while($rek = mysqli_fetch_array($rekomendasi)){ ?>
+                                    <?php foreach($favorit as $f){
+                                        if($rek['id_lowongan'] == $f){    
+                                    ?>
+                                    <?php 
+                                        $fav_btn = '';                              
+                                        $fav = mysqli_query($koneksi,"SELECT * FROM tb_simpan WHERE id_lowongan='$rek[id_lowongan]' AND id_user='$a[id_user]'");
+                                        if(mysqli_num_rows($fav) > 0){
+                                            $fav_btn = "<a href='aksi.php?condition=unsave&idd=$rek[id_lowongan]&id=$a[id_user]&posisi=kerja' class='btn btn-outline-primary btn-sm px-3'><i style='font-size: 16px; margin-left:5px;' class='fa fa-star'></i></a>";
+                                        }else{
+                                            $fav_btn = "<a href='aksi.php?condition=save&idd=$rek[id_lowongan]&id=$a[id_user]&posisi=kerja' class='btn btn-outline-primary btn-sm px-3'><i style='font-size: 16px; margin-left:5px;' class='far fa-star'></i></a>";
+                                        }
+                                    ?>
                                     <div class="swiper-slide">
                                         <div class="card">
                                             <div class="card-body">
-                                                <h5 class="card-title"><?php echo $w['nama_perusahaan']; ?></h5>
-                                                <p class="card-text"><?php echo $w['gaji']; ?></p>
-                                                <p><?php echo $w['lokasi']; ?></p>
-                                                <p><?php echo $w['posisi']; ?></p>
-                                                <p><?php echo $w['gaji']; ?></p>
+                                                <h5 class="card-title"><?php echo $rek['nama_perusahaan']; ?> <?php echo $fav_btn; ?></h5>
+                                                <p class="card-text">IDR. <?php echo number_format("$rek[gaji]", 0, ",", "."); ?></p>
+                                                <p><?php echo $rek['lokasi']; ?></p>
+                                                <p><?php echo $rek['posisi']; ?></p>
+                                                <p><?php echo $rek['kategori']; ?></p>
+                                                <a href='detail-lowongan.php?id=<?php echo $rek['id_lowongan']; ?>' class='btn btn-success'>Lihat</a>
                                             </div>
                                         </div> 
                                     </div>
                                 <?php } ?>
+                                <?php }
+                                } ?>
                                 <!-- <div class="swiper-slide"><img class="img-fluid width-100" src="https://colorlib.com/polygon/admindek/files/assets/images/task/task-u3.jpg" alt="Card image cap"></div>
                                 <div class="swiper-slide"><img class="img-fluid width-100" src="https://colorlib.com/polygon/admindek/files/assets/images/task/task-u3.jpg" alt="Card image cap"></div>
                                 <div class="swiper-slide"><img class="img-fluid width-100" src="https://colorlib.com/polygon/admindek/files/assets/images/task/task-u3.jpg" alt="Card image cap"></div> -->
@@ -280,8 +308,7 @@ if(isset($_GET['nama'] )){
     integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
     crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script src="https://unpkg.com/swiper/swiper-bundle.js"></script>
-<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script src="assets/js/swiper.min.js"></script>
 <script>
     $(".select2").select2({
         placeholder: "Contoh : Garut",

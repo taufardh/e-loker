@@ -10,6 +10,7 @@ $data = mysqli_query($koneksi,"SELECT * FROM tb_lowongan INNER JOIN tb_perusahaa
 $d    = mysqli_fetch_assoc($data);
 ?>
 <?php include 'header.php'; ?>
+<link rel="stylesheet" type="text/css" href="assets/css/swiper.min.css">
                         <div class="pcoded-content">
                         <div class="page-header card">
                             <div class="row align-items-end">
@@ -32,6 +33,80 @@ $d    = mysqli_fetch_assoc($data);
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="pcoded-inner-content">
+                        <div class="main-body">
+                        <div class="page-wrapper">
+                            <div class="page-body">
+                                <div class="row">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5>Rekomendasi</h5>
+                                        </div>
+                                        <div class="card-block">
+                                            <!-- Slider main container -->
+                                            <div class="swiper-container">
+                                                <!-- Additional required wrapper -->
+                                                <div class="swiper-wrapper">
+                                                    <!-- Slides -->
+                                                    <?php 
+                                                    $qwry = '';
+                                                    $qwry .= 'select *, ';
+                                                    $qwry .= 'if(tb_posisi.id_posisi = '.$d['id_posisi'].', 1, 0) as val_posisi, ';
+                                                    $qwry .= 'if(tb_lokasi.id_lokasi = '.$d['id_lokasi'].', 1, 0) as val_lokasi, ';
+                                                    $qwry .= '( if(tb_posisi.id_posisi = '.$d['id_posisi'].', 1, 0) + if(tb_lokasi.id_lokasi = '.$d['id_lokasi'].', 1, 0)) as rekomendasi_value ';
+                                                    $qwry .= 'from tb_lowongan ';
+                                                    $qwry .= 'inner join tb_perusahaan on tb_lowongan.id_perusahaan = tb_perusahaan.id_perusahaan ';
+                                                    $qwry .= 'inner join tb_kategori on tb_perusahaan.id_kategori = tb_kategori.id_kategori ';
+                                                    $qwry .= 'inner join tb_posisi on tb_lowongan.posisi = tb_posisi.id_posisi ';
+                                                    $qwry .= 'inner join tb_lokasi on tb_lowongan.lokasi = tb_lokasi.id_lokasi ';
+                                                    $qwry .= 'order by rekomendasi_value desc ';
+                                                    $qwry .= 'limit 15';
+                                                    $rekomendasi = mysqli_query($koneksi, $qwry); 
+                                                    while($rek = mysqli_fetch_array($rekomendasi)){ ?>
+                                                        <?php 
+                                                            $fav_btn = '';                              
+                                                            $fav = mysqli_query($koneksi,"SELECT * FROM tb_simpan WHERE id_lowongan='$rek[id_lowongan]' AND id_user='$a[id_user]'");
+                                                            if(mysqli_num_rows($fav) > 0){
+                                                                $fav_btn = "<a href='aksi.php?condition=unsave&idd=$rek[id_lowongan]&id=$a[id_user]&posisi=kerja' class='btn btn-outline-primary btn-sm px-3'><i style='font-size: 16px; margin-left:5px;' class='fa fa-star'></i></a>";
+                                                            }else{
+                                                                $fav_btn = "<a href='aksi.php?condition=save&idd=$rek[id_lowongan]&id=$a[id_user]&posisi=kerja' class='btn btn-outline-primary btn-sm px-3'><i style='font-size: 16px; margin-left:5px;' class='far fa-star'></i></a>";
+                                                            }
+                                                        ?>
+                                                        <div class="swiper-slide">
+                                                            <div class="card">
+                                                                <div class="card-body">
+                                                                    <h5 class="card-title"><?php echo $rek['nama_perusahaan']; ?> <?php echo $fav_btn; ?></h5>
+                                                                    <p class="card-text">IDR. <?php echo number_format("$rek[gaji]", 0, ",", "."); ?></p>
+                                                                    <p><?php echo $rek['lokasi']; ?></p>
+                                                                    <p><?php echo $rek['posisi']; ?></p>
+                                                                    <p><?php echo $rek['kategori']; ?></p>
+                                                                    <a href='detail-lowongan.php?id=<?php echo $rek['id_lowongan']; ?>' class='btn btn-success'>Lihat</a>
+                                                                </div>
+                                                            </div> 
+                                                        </div>
+                                                    <?php } ?>
+                                                    <!-- <div class="swiper-slide"><img class="img-fluid width-100" src="https://colorlib.com/polygon/admindek/files/assets/images/task/task-u3.jpg" alt="Card image cap"></div>
+                                                    <div class="swiper-slide"><img class="img-fluid width-100" src="https://colorlib.com/polygon/admindek/files/assets/images/task/task-u3.jpg" alt="Card image cap"></div>
+                                                    <div class="swiper-slide"><img class="img-fluid width-100" src="https://colorlib.com/polygon/admindek/files/assets/images/task/task-u3.jpg" alt="Card image cap"></div> -->
+
+                                                </div>
+                                                <!-- If we need pagination -->
+                                                <div class="swiper-pagination"></div>
+
+                                                <!-- If we need navigation buttons -->
+                                                <!-- <div class="swiper-button-prev"></div>
+                                                <div class="swiper-button-next"></div> -->
+
+                                                <!-- If we need scrollbar -->
+                                                <div class="swiper-scrollbar"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
                         </div>
 
                         <div class="pcoded-inner-content">
@@ -311,6 +386,31 @@ $d    = mysqli_fetch_assoc($data);
     <script src="assets/js/horizontal-layout.min.js" type="799ddc403e80b1cc26e7d64d-text/javascript"></script>
     <script type="799ddc403e80b1cc26e7d64d-text/javascript" src="assets/js/custom-dashboard.min.js"></script>
     <script type="799ddc403e80b1cc26e7d64d-text/javascript" src="assets/js/script.js"></script>
+    <script src="assets/js/swiper.min.js"></script>
+    <script>
+        const swiper = new Swiper('.swiper-container', {
+            // Optional parameters
+            direction: 'horizontal',
+            slidesPerView: 3,
+            loop: true,
+
+            // If we need pagination
+            pagination: {
+                el: '.swiper-pagination',
+            },
+
+            // Navigation arrows
+            //   navigation: {
+            //     nextEl: '.swiper-button-next',
+            //     prevEl: '.swiper-button-prev',
+            //   },
+
+            // And if we need scrollbar
+            scrollbar: {
+                el: '.swiper-scrollbar',
+            },
+        });
+    </script>
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"
         type="799ddc403e80b1cc26e7d64d-text/javascript"></script>
