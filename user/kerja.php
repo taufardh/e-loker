@@ -1,26 +1,26 @@
 <?php include 'header.php';?>
 <link rel="stylesheet" type="text/css" href="assets/css/swiper.min.css">
 <?php
-if(isset($_GET['nama'] )){
-    $nama     = $_GET['nama'];
+if(isset($_GET['posisi'] )){
+    $posisi     = $_GET['posisi'];
     $kategori = $_GET['kategori'];
-    $nearby   = $_GET['nearby'];
-    if($nearby == "" && $kategori == "" && $nama == ""  ){
+    $lokasi   = $_GET['lokasi'];
+    if($lokasi == "all" && $kategori == "all" && $posisi == "all"  ){
         $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi");
-    }elseif($nearby !== "" && $kategori !== "" && $nama !== ""  ){
-        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi WHERE tb_perusahaan.lokasi_perusahaan LIKE '%$nearby%' AND tb_lowongan.posisi LIKE '%$nama%' AND tb_kategori.kategori LIKE '%$kategori%'");
-    }elseif($nearby == "" && $kategori == "" ){
-        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi WHERE tb_lowongan.posisi LIKE '%$nama%'");
-    }elseif($nama == "" && $nearby == "" ){
-        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi WHERE tb_kategori.kategori='$kategori'");
-    }elseif($nama == "" && $kategori == "" ){
-        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi WHERE tb_perusahaan.lokasi_perusahaan LIKE '%$nearby%'");
-    }elseif($nearby == ""){
-        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi WHERE tb_lowongan.posisi LIKE '%$nama%' AND tb_kategori.kategori='$kategori'");
-    }elseif($kategori == ""){
-        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi WHERE tb_perusahaan.lokasi_perusahaan LIKE '%$nearby%' AND tb_lowongan.posisi LIKE '%$nama%'");
-    }elseif($nama == ""){
-        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi WHERE tb_perusahaan.lokasi_perusahaan LIKE '%$nearby%' AND tb_kategori.kategori='$kategori'");
+    }elseif($lokasi !== "all" && $kategori !== "all" && $posisi !== "all"  ){
+        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi WHERE tb_lokasi.id_lokasi = '$lokasi' AND tb_posisi.id_posisi = '$posisi' AND tb_kategori.id_kategori = '$kategori'");
+    }elseif($lokasi == "all" && $kategori == "all" ){
+        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi WHERE tb_posisi.id_posisi = '$posisi'");
+    }elseif($posisi == "all" && $lokasi == "all" ){
+        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi WHERE tb_kategori.id_kategori='$kategori'");
+    }elseif($posisi == "all" && $kategori == "all" ){
+        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi WHERE tb_lokasi.id_lokasi = '$lokasi'");
+    }elseif($lokasi == "all"){
+        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi WHERE tb_posisi.id_posisi = '$posisi' AND tb_kategori.id_kategori='$kategori'");
+    }elseif($kategori == "all"){
+        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi WHERE tb_lokasi.id_lokasi = '$lokasi' AND tb_posisi.id_posisi = '$posisi'");
+    }elseif($posisi == "all"){
+        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi WHERE tb_lokasi.id_lokasi = '$lokasi' AND tb_kategori.id_kategori='$kategori'");
     }
 }else{
     $sql = mysqli_query($koneksi,"SELECT * FROM tb_lowongan INNER JOIN tb_perusahaan ON tb_lowongan.id_perusahaan=tb_perusahaan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi ORDER BY id_lowongan DESC"); 
@@ -35,7 +35,7 @@ if(isset($_GET['nama'] )){
             <div class="bg-white p-3 shadow rounded my-5">
                 <form action="" method="get">
                     <div class="row justify-content-center">
-                        <div class="col-md-4">
+                        <!-- <div class="col-md-4">
                             <div class="form-group">
                                 <label for="posisi">Posisi : </label>
                                 <input type="text" name="nama" id="posisi" class="form-control" placeholder="Masukan Posisi">
@@ -46,16 +46,45 @@ if(isset($_GET['nama'] )){
                                 <label for="lokasi">Lokasi : </label>
                                 <input type="text" name="nearby" class="form-control" id="lokasi" placeholder="Masukan Lokasi">
                             </div>
+                        </div> -->
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="posisi">Posisi : </label>
+                                <select name="posisi" class="form-control">
+                                    <option value="all">Masukan Posisi</option>
+                                    <option value="all">Semua Posisi</option>
+                                    <?php 
+                                    $data_pos = mysqli_query($koneksi,"SELECT * FROM tb_posisi"); 
+                                    while($pos = mysqli_fetch_array($data_pos)){
+                                    echo "<option value='$pos[id_posisi]'> $pos[posisi] </option>";
+                                    } ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="lokasi">Lokasi : </label>
+                                <select name="lokasi" class="form-control">
+                                    <option value="all">Masukan Lokasi</option>
+                                    <option value="all">Semua Lokasi</option>
+                                    <?php 
+                                    $data_lok = mysqli_query($koneksi,"SELECT * FROM tb_lokasi"); 
+                                    while($lok = mysqli_fetch_array($data_lok)){
+                                    echo "<option value='$lok[id_lokasi]'> $lok[lokasi] </option>";
+                                    } ?>
+                                </select>
+                            </div>
                         </div>
                         <div class="col-md-3">
                             <div class="form-group">
                                 <label for="kategori">Kategori : </label>
                                 <select name="kategori" class="form-control">
-                                    <option value="">Masukan Kategori</option>
+                                    <option value="all">Masukan Kategori</option>
+                                    <option value="all">Semua Kategori</option>
                                     <?php 
                                     $data = mysqli_query($koneksi,"SELECT * FROM tb_kategori"); 
                                     while($d = mysqli_fetch_array($data)){
-                                    echo "<option value='$d[kategori]'> $d[kategori] </option>";
+                                    echo "<option value='$d[id_kategori]'> $d[kategori] </option>";
                                     } ?>
                                 </select>
                             </div>
@@ -74,7 +103,26 @@ if(isset($_GET['nama'] )){
                     <?php 
                     if(isset($_GET['cari'])){
                             echo "<h5>Hasil Pencarian : ";
-                        echo "<span class='font-weight-bold'> $nama $nearby $kategori </span> </h5>";
+                            echo "<span class='font-weight-bold'>";
+                            $data_pos = mysqli_query($koneksi,"SELECT * FROM tb_posisi"); 
+                            while($pos = mysqli_fetch_array($data_pos)){
+                                if($posisi == $pos['id_posisi']){
+                                    echo "$pos[posisi]";
+                                }
+                            }
+                            $data_lok = mysqli_query($koneksi,"SELECT * FROM tb_lokasi"); 
+                            while($lok = mysqli_fetch_array($data_lok)){
+                                if($lokasi == $lok['id_lokasi']){
+                                    echo "$lok[lokasi]";
+                                }
+                            }
+                            $data_kat = mysqli_query($koneksi,"SELECT * FROM tb_kategori"); 
+                            while($kat = mysqli_fetch_array($data_kat)){
+                                if($kategori == $kat['id_kategori']){
+                                    echo "$kat[kategori]";
+                                }
+                            }
+                        echo "</span> </h5>";
                     }else{
                         
                     ?>
