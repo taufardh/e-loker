@@ -169,12 +169,22 @@ if(isset($_GET['posisi'] )){
                                         if($rek['id_lowongan'] == $f){    
                                     ?>
                                     <?php 
-                                        $fav_btn = '';                              
-                                        $fav = mysqli_query($koneksi,"SELECT * FROM tb_simpan WHERE id_lowongan='$rek[id_lowongan]' AND id_user='$a[id_user]'");
-                                        if(mysqli_num_rows($fav) > 0){
-                                            $fav_btn = "<a href='aksi.php?condition=unsave&idd=$rek[id_lowongan]&id=$a[id_user]&posisi=kerja' class='btn btn-outline-primary btn-sm px-3'><i style='font-size: 16px; margin-left:5px;' class='fa fa-star'></i></a>";
-                                        }else{
-                                            $fav_btn = "<a href='aksi.php?condition=save&idd=$rek[id_lowongan]&id=$a[id_user]&posisi=kerja' class='btn btn-outline-primary btn-sm px-3'><i style='font-size: 16px; margin-left:5px;' class='far fa-star'></i></a>";
+                                        $fav_btn = '';
+                                        if(isset($a)){                              
+                                            $fav = mysqli_query($koneksi,"SELECT * FROM tb_simpan WHERE id_lowongan='$rek[id_lowongan]' AND id_user='$a[id_user]'");
+                                            if(mysqli_num_rows($fav) > 0){
+                                                $fav_btn = "<a href='aksi.php?condition=unsave&idd=$rek[id_lowongan]&id=$a[id_user]&posisi=kerja' class='btn btn-outline-primary btn-sm px-3'><i style='font-size: 16px; margin-left:5px;' class='fa fa-star'></i></a>";
+                                            }else{
+                                                $fav_btn = "<a href='aksi.php?condition=save&idd=$rek[id_lowongan]&id=$a[id_user]&posisi=kerja' class='btn btn-outline-primary btn-sm px-3'><i style='font-size: 16px; margin-left:5px;' class='far fa-star'></i></a>";
+                                            }
+                                        }
+                                        else{
+                                            $fav = mysqli_query($koneksi,"SELECT * FROM tb_simpan WHERE id_lowongan='$rek[id_lowongan]'");
+                                            if(mysqli_num_rows($fav) > 0){
+                                                $fav_btn = "<a href='aksi.php?condition=unsave&idd=$rek[id_lowongan]&posisi=kerja' class='btn btn-outline-primary btn-sm px-3'><i style='font-size: 16px; margin-left:5px;' class='fa fa-star'></i></a>";
+                                            }else{
+                                                $fav_btn = "<a href='aksi.php?condition=save&idd=$rek[id_lowongan]&posisi=kerja' class='btn btn-outline-primary btn-sm px-3'><i style='font-size: 16px; margin-left:5px;' class='far fa-star'></i></a>";
+                                            }
                                         }
                                     ?>
                                     <div class="swiper-slide">
