@@ -1,27 +1,30 @@
 <?php include 'header.php';?>
 <link rel="stylesheet" type="text/css" href="assets/css/swiper.min.css">
 <?php
-if(isset($_GET['posisi'] )){
-    $posisi     = $_GET['posisi'];
-    $kategori = $_GET['kategori'];
-    $lokasi   = $_GET['lokasi'];
-    if($lokasi == "all" && $kategori == "all" && $posisi == "all"  ){
-        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi");
-    }elseif($lokasi !== "all" && $kategori !== "all" && $posisi !== "all"  ){
-        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi WHERE tb_lokasi.id_lokasi = '$lokasi' AND tb_posisi.id_posisi = '$posisi' AND tb_kategori.id_kategori = '$kategori'");
-    }elseif($lokasi == "all" && $kategori == "all" ){
-        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi WHERE tb_posisi.id_posisi = '$posisi'");
-    }elseif($posisi == "all" && $lokasi == "all" ){
-        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi WHERE tb_kategori.id_kategori='$kategori'");
-    }elseif($posisi == "all" && $kategori == "all" ){
-        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi WHERE tb_lokasi.id_lokasi = '$lokasi'");
-    }elseif($lokasi == "all"){
-        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi WHERE tb_posisi.id_posisi = '$posisi' AND tb_kategori.id_kategori='$kategori'");
-    }elseif($kategori == "all"){
-        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi WHERE tb_lokasi.id_lokasi = '$lokasi' AND tb_posisi.id_posisi = '$posisi'");
-    }elseif($posisi == "all"){
-        $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi WHERE tb_lokasi.id_lokasi = '$lokasi' AND tb_kategori.id_kategori='$kategori'");
-    }
+if(isset($_GET['search'] )){
+    $search = strtoupper($_GET['search']);
+    $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi WHERE UPPER(tb_posisi.posisi) like '%$search%' or UPPER(tb_kategori.kategori) like '%$search%' or UPPER(tb_lokasi.lokasi) like '%$search%'");
+    
+    // $posisi     = $_GET['posisi'];
+    // $kategori = $_GET['kategori'];
+    // $lokasi   = $_GET['lokasi'];
+    // if($lokasi == "all" && $kategori == "all" && $posisi == "all"  ){
+    //     $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi");
+    // }elseif($lokasi !== "all" && $kategori !== "all" && $posisi !== "all"  ){
+    //     $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi WHERE tb_lokasi.id_lokasi = '$lokasi' AND tb_posisi.id_posisi = '$posisi' AND tb_kategori.id_kategori = '$kategori'");
+    // }elseif($lokasi == "all" && $kategori == "all" ){
+    //     $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi WHERE tb_posisi.id_posisi = '$posisi'");
+    // }elseif($posisi == "all" && $lokasi == "all" ){
+    //     $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi WHERE tb_kategori.id_kategori='$kategori'");
+    // }elseif($posisi == "all" && $kategori == "all" ){
+    //     $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi WHERE tb_lokasi.id_lokasi = '$lokasi'");
+    // }elseif($lokasi == "all"){
+    //     $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi WHERE tb_posisi.id_posisi = '$posisi' AND tb_kategori.id_kategori='$kategori'");
+    // }elseif($kategori == "all"){
+    //     $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi WHERE tb_lokasi.id_lokasi = '$lokasi' AND tb_posisi.id_posisi = '$posisi'");
+    // }elseif($posisi == "all"){
+    //     $sql = mysqli_query($koneksi,"SELECT * FROM tb_perusahaan INNER JOIN tb_kategori ON tb_perusahaan.id_kategori=tb_kategori.id_kategori INNER JOIN tb_lowongan ON tb_perusahaan.id_perusahaan=tb_lowongan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi WHERE tb_lokasi.id_lokasi = '$lokasi' AND tb_kategori.id_kategori='$kategori'");
+    // }
 }else{
     $sql = mysqli_query($koneksi,"SELECT * FROM tb_lowongan INNER JOIN tb_perusahaan ON tb_lowongan.id_perusahaan=tb_perusahaan.id_perusahaan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_lokasi ON tb_lokasi.id_lokasi=tb_lowongan.lokasi ORDER BY id_lowongan DESC"); 
 }
@@ -99,40 +102,7 @@ if(isset($_GET['posisi'] )){
                 </form>
             </div>
             <div class="page-header-title">
-                <div class="d-inline">
-                    <?php 
-                    if(isset($_GET['cari'])){
-                            echo "<h5>Hasil Pencarian : ";
-                            echo "<span class='font-weight-bold'>";
-                            $data_pos = mysqli_query($koneksi,"SELECT * FROM tb_posisi"); 
-                            while($pos = mysqli_fetch_array($data_pos)){
-                                if($posisi == $pos['id_posisi']){
-                                    echo "$pos[posisi]";
-                                }
-                            }
-                            $data_lok = mysqli_query($koneksi,"SELECT * FROM tb_lokasi"); 
-                            while($lok = mysqli_fetch_array($data_lok)){
-                                if($lokasi == $lok['id_lokasi']){
-                                    echo "$lok[lokasi]";
-                                }
-                            }
-                            $data_kat = mysqli_query($koneksi,"SELECT * FROM tb_kategori"); 
-                            while($kat = mysqli_fetch_array($data_kat)){
-                                if($kategori == $kat['id_kategori']){
-                                    echo "$kat[kategori]";
-                                }
-                            }
-                        echo "</span> </h5>";
-                    }else{
-                        
-                    ?>
-                    <h5>Lowongan Kerja Terbaru di
-                        <span class="font-weight-bold">
-                            Semua Lokasi
-                        </span></h5>
-                    <!-- <span>lorem ipsum dolor sit amet, consectetur adipisicing elit</span> -->
-                </div>
-                <?php } ?>
+                
             </div>
         </div>
     </div>

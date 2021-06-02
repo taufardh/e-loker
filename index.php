@@ -68,37 +68,8 @@ include 'koneksi.php';
             <form action="user/kerja.php" method="get" class="d-block d-flex">
               <div class="fields d-block d-flex">
                 <div class="textfield-search one-third">
-                  <!-- <input type="text" class="form-control" name="nama" placeholder="Masukan Posisi"> -->
-                  <select name="posisi" class="form-control">
-                    <option value="">Masukan Posisi</option>
-                    <?php 
-                    $data = mysqli_query($koneksi,"SELECT * FROM tb_posisi"); 
-                    while($d = mysqli_fetch_array($data)){
-                      echo "<option value='$d[id_posisi]'> $d[posisi] </option>";
-                    } ?>
-                  </select>
-                </div>
-                <div class="textfield-search one-third">
-                  <!-- <input type="text" name="nearby" class="form-control" placeholder="Masukan Kota"> -->
-                  <select name="lokasi" class="form-control">
-                    <option value="">Masukan Lokasi</option>
-                    <?php 
-                    $data = mysqli_query($koneksi,"SELECT * FROM tb_lokasi"); 
-                    while($d = mysqli_fetch_array($data)){
-                      echo "<option value='$d[id_lokasi]'> $d[lokasi] </option>";
-                    } ?>
-                  </select>
-                </div>
-                <div class="select-wrap one-third">
-                  <select name="kategori" class="form-control">
-                    <option value="">Masukan Kategori</option>
-                    <?php 
-                    $data = mysqli_query($koneksi,"SELECT * FROM tb_kategori"); 
-                    while($d = mysqli_fetch_array($data)){
-                      echo "<option value='$d[id_kategori]'> $d[kategori] </option>";
-                    } ?>
-                  </select>
-                </div>
+                  <input type="text" name="search" class="form-control">
+                </div> 
               </div>
               <input type="submit" name="cari" class="search-submit btn btn-primary" value="Search">
             </form>
