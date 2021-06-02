@@ -1,6 +1,14 @@
 <?php $page = "loker"; ?>
 <?php include 'header.php' ?>
 
+<?php 
+if(isset($_GET['edit'] )){
+    $edit = $_GET['edit'];
+    $sql = mysqli_query($koneksi,"SELECT * FROM tb_lowongan where id_lowongan = '$edit'");
+    $res = mysqli_fetch_array($sql);
+}
+?>
+
 <div class="pcoded-content">
 
     <div class="page-header card">
@@ -52,7 +60,11 @@
                                                     <?php 
                                                     $data = mysqli_query($koneksi,"SELECT * FROM tb_posisi"); 
                                                     while($d = mysqli_fetch_array($data)){ ?>
-                                                        <option value="<?php echo $d['id_posisi'] ?>"><?php echo $d['posisi'] ?></option>
+                                                        <?php if($d['id_posisi'] == $res['posisi']){ ?>
+                                                            <option value="<?php echo $d['id_posisi'] ?>" selected><?php echo $d['posisi'] ?></option>
+                                                        <?php }else{ ?>
+                                                            <option value="<?php echo $d['id_posisi'] ?>"><?php echo $d['posisi'] ?></option>
+                                                        <?php } ?>
                                                     <?php } ?>
                                                 </select>
                                                     <!-- placeholder="Masukan Posisi Pekerjaan"> -->
@@ -65,7 +77,11 @@
                                                     <?php 
                                                     $data = mysqli_query($koneksi,"SELECT * FROM tb_lokasi"); 
                                                     while($d = mysqli_fetch_array($data)){ ?>
-                                                        <option value="<?php echo $d['id_lokasi'] ?>"><?php echo $d['lokasi'] ?></option>
+                                                        <?php if($d['id_lokasi'] == $res['lokasi']){ ?>
+                                                            <option value="<?php echo $d['id_lokasi'] ?>" selected><?php echo $d['lokasi'] ?></option>
+                                                        <?php }else{ ?>
+                                                            <option value="<?php echo $d['id_lokasi'] ?>"><?php echo $d['lokasi'] ?></option>
+                                                        <?php } ?>
                                                     <?php } ?>
                                                 </select>
                                             </div>
@@ -73,34 +89,35 @@
                                         <div class="form-group row">
                                             <label class="col-sm-2 col-form-label">Gaji </label>
                                             <div class="col-sm-10">
+                                                <input type="hidden" name="id_low" value="<?php echo $res['id_lowongan'] ?>">
                                                 <input type="hidden" name="id" value="<?= $assoc['id_perusahaan'] ?>">
-                                                <input type="text" class="form-control" autocomplete="off" name="gaji"
+                                                <input type="text" class="form-control" value="<?php echo $res['gaji'] ?>" autocomplete="off" name="gaji"
                                                     placeholder="Exp : 4.000.000">
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-sm-2 col-form-label">Persyaratan</label>
                                             <div class="col-sm-10">
-                                                <textarea name="persyaratan" rows="5" cols="5" class="form-control" placeholder="Masukkan Persyaratan "></textarea>
+                                                <textarea name="persyaratan" rows="5" cols="5" class="form-control" placeholder="Masukkan Persyaratan "><?php echo $res['persyaratan'] ?></textarea>
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-sm-2 col-form-label">Deskripsi Pekerjaan</label>
                                             <div class="col-sm-10">
                                                 <textarea rows="5" cols="5" class="form-control" autocomplete="off"
-                                                    name="deskripsi" placeholder="Deskripsikan Posisi pekerjaan"></textarea>
+                                                    name="deskripsi" placeholder="Deskripsikan Posisi pekerjaan"><?php echo $res['deskripsi'] ?></textarea>
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-sm-2 col-form-label">Jumlah Lowongan</label>
                                             <div class="col-sm-10">
-                                                <input type="text" class="form-control" autocomplete="off" name="jumlah"
+                                                <input type="text" class="form-control" value="<?php echo $res['lowongan'] ?>" autocomplete="off" name="jumlah"
                                                     placeholder="Masukan jumlah orang yang di butuhkan">
                                             </div>
                                         </div>
                                         <div class="float-right">
-                                            <button type="submit" name="tambah" class="btn btn-success btn-sm"
-                                                value="Tambah"> Tambah </button>
+                                            <button type="submit" name="update" class="btn btn-success btn-sm"
+                                                value="Update"> Update </button>
                                             <a href="lowongan.php" class="btn btn-danger btn-sm">Kembali</a>
 
                                         </div>
@@ -125,7 +142,8 @@
 
 <?php 
 include '../koneksi.php';
-if(isset($_POST['tambah'])){
+if(isset($_POST['update'])){
+    $id_low = $_POST['id_low'];
     $id     = $_POST['id'];
     $posisi = $_POST['posisi'];
     $lokasi = $_POST['lokasi'];
@@ -133,7 +151,8 @@ if(isset($_POST['tambah'])){
     $persyaratan = $_POST['persyaratan'];
     $deskripsi   = $_POST['deskripsi'];
     $jumlah      = $_POST['jumlah'];
-    $sql = mysqli_query($koneksi,"INSERT INTO tb_lowongan VALUES('','$id','$gaji','$posisi','$lokasi','$deskripsi','$persyaratan','$date','buka','$jumlah')");
+    $sql = mysqli_query($koneksi,"UPDATE tb_lowongan SET id_perusahaan = '$id', gaji = '$gaji', posisi = '$posisi', lokasi = '$lokasi', deskripsi = '$deskripsi', persyaratan = '$persyaratan', tanggal = '$date', lowongan = '$jumlah' where id_lowongan='$id_low'");
+    // $sql = mysqli_query($koneksi,"INSERT INTO tb_lowongan VALUES('','$id','$gaji','$posisi','$lokasi','$deskripsi','$persyaratan','$date','buka','$jumlah')");
     if($sql){
         header('location:lowongan.php?pesan=berhasil');
     }else{

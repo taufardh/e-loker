@@ -74,6 +74,7 @@
                                                     <th>Persyaratan</th>
                                                     <th>Jumlah Lowongan</th>
                                                     <th>Status</th>
+                                                    <th>Edit</th>
                                                 </tr>
                                             </thead>
                                             <?php 
@@ -109,6 +110,7 @@
 
                                                     } ?>
                                                     </td>
+                                                    <td><a class='btn btn-primary btn-sm' href="editLW.php?edit=<?php echo $d['id_lowongan'] ?>">Edit</a></td>
                                                 </tr>
                                             <?php } ?>
                                             </tbody>
