@@ -5,10 +5,10 @@ if(isset($_POST['login'])){
     $password = MD5($_POST['password']);
     $role     = $_POST['role'];
 
-    $secret_key = "6LdWTK0aAAAAAOgJqwpDuSAX8o_rF5mQY_YLum1j";
-    $verify = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secret_key.'&response='.$_POST['g-recaptcha-response']);
-    $response = json_decode($verify);
-    if($response -> success){
+    // $secret_key = "6LdWTK0aAAAAAOgJqwpDuSAX8o_rF5mQY_YLum1j";
+    // $verify = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secret_key.'&response='.$_POST['g-recaptcha-response']);
+    // $response = json_decode($verify);
+    // if($response -> success){
         if($role == "admin"){
             $cek = mysqli_query($koneksi,"SELECT * FROM tb_admin WHERE email='$email' AND password='$password'");
             $assoc = mysqli_fetch_assoc($cek);
@@ -34,9 +34,9 @@ if(isset($_POST['login'])){
                 header('location:login.php?pesan=salah');
             }
         }
-    }else{
-        header('location:login.php?pesan=chaptca');
-    }
+    // }else{
+    //     header('location:login.php?pesan=chaptca');
+    // }
 
     
 }
@@ -46,10 +46,10 @@ if(isset($_POST['loginuser'])){
     $email = $_POST['email'];
     $password = MD5($_POST['password']);
     $cek = mysqli_query($koneksi,"SELECT * FROM tb_user WHERE email='$email' AND password='$password'");
-    $secret_key = "6LdWTK0aAAAAAOgJqwpDuSAX8o_rF5mQY_YLum1j";
-    $verify = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secret_key.'&response='.$_POST['g-recaptcha-response']);
-    $response = json_decode($verify);
-    if($response -> success){
+    // $secret_key = "6LdWTK0aAAAAAOgJqwpDuSAX8o_rF5mQY_YLum1j";
+    // $verify = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secret_key.'&response='.$_POST['g-recaptcha-response']);
+    // $response = json_decode($verify);
+    // if($response -> success){
         if(mysqli_num_rows($cek) > 0 ){
             ob_start();
             session_start();
@@ -59,9 +59,9 @@ if(isset($_POST['loginuser'])){
         }else{
             header('location:loginn.php?pesan=passwordatauemailsalah');
         }
-    }else{
-        header('location:loginn.php?pesan=chaptcha');
-    }
+    // }else{
+    //     header('location:loginn.php?pesan=chaptcha');
+    // }
     
 }
 ?>

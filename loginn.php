@@ -89,12 +89,12 @@
                                     <span class="form-bar"></span>
                                     <label class="float-label">Password</label>
                                 </div>
-                                <div class="row justify-content-center">
+                                <!-- <div class="row justify-content-center">
                                     <div class="col-md-9">
                                         <div class="g-recaptcha mt-2" date-size="compact"
                                             data-sitekey="6LdWTK0aAAAAAAXXBo_R41M9LbNsxCinW_tru2mf"></div>
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="row m-t-30">
                                     <div class="col-md-12">
                                         <button type="submit" name="loginuser"

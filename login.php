@@ -81,11 +81,11 @@
                                         <option value="perusahaan">Perusahaan</option>
                                     </select>
                                 </div>
-                                <div class="form-group" style="text-align:center;">
+                                <!-- <div class="form-group" style="text-align:center;">
                                 <center>
                                     <div class="g-recaptcha text-center" data-sitekey="6LdWTK0aAAAAAAXXBo_R41M9LbNsxCinW_tru2mf"></div>
                                 </center>
-                                </div>
+                                </div> -->
                                 <div class="row m-t-30">
                                     <div class="col-md-12">
                                         <button type="submit" name="login" class="btn btn-primary btn-md btn-block waves-effect text-center m-b-20">LOGIN</button>
