@@ -1,5 +1,6 @@
 <?php include 'header.php';?>
 <link rel="stylesheet" type="text/css" href="assets/css/swiper.min.css">
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
 <?php
 if(isset($_GET['search'] )){
     $search = strtoupper($_GET['search']);
@@ -50,7 +51,7 @@ if(isset($_GET['search'] )){
                                 <input type="text" name="nearby" class="form-control" id="lokasi" placeholder="Masukan Lokasi">
                             </div>
                         </div> -->
-                        <div class="col-md-3">
+                        <!-- <div class="col-md-3">
                             <div class="form-group">
                                 <label for="posisi">Posisi : </label>
                                 <select name="posisi" class="form-control">
@@ -91,11 +92,18 @@ if(isset($_GET['search'] )){
                                     } ?>
                                 </select>
                             </div>
+                        </div> -->
+                        <div class="col-md-10">
+                            <div class="form-group">
+                                    <div class="textfield-search one-third">
+                                    <input type="text" name="search" class="form-control">
+                                    </div> 
+                            </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <div style="margin-bottom: 30px;"></div>
-                                <button type="submit" name="cari" class="btn btn-primary btn-sm btn-block">CARI</button>
+                                <!-- <div style="margin-bottom: 30px;"></div> -->
+                                <button type="submit" class="btn btn-primary btn-sm btn-block">CARI</button>
                             </div>
                         </div>
                     </div>
@@ -197,126 +205,140 @@ if(isset($_GET['search'] )){
             <div class="page-wrapper">
                 <div class="page-body">
                     <div class="row">
-                        <div class="col-xl-12">
-
-                            <div class="card">
-                                <div class="card-block py-4">
-                                    <div class="row">
-                                        <?php if( mysqli_num_rows($sql) == 0 ){
-                                        echo "Hasil Pencarian Tidak Ada";
-                                    } ?>
-                                        <?php 
-                                                                
-                                            $kerja = mysqli_query($koneksi,"SELECT * FROM tb_lowongan INNER JOIN tb_perusahaan ON tb_lowongan.id_perusahaan=tb_perusahaan.id_perusahaan ORDER BY id_lowongan DESC"); 
-                                            while($k = mysqli_fetch_array($sql)){ ?>
-                                        <!-- CONTENT -->
-                                        <div class="col-md-2">
-                                            <div class="text-center my-4">
-                                                <img src="../admin/img/perusahaan/<?= $k['logo']?>" class="img-fluid"
-                                                    alt="">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-10">
-                                            <ul>
-                                                <div class="text-center float-right">
-                                                    <?php if( $login == "belum" ){
-                                                            echo "<a href='../loginn.php?pesan=logindulu' class='btn btn-outline-primary btn-sm px-3'><i style='font-size: 16px; margin-left:5px;' class='far fa-star'></i></a>";
-                                                    }else{ ?>
-                                                    <?php 
-                                                                            
-                                                    $cekcek = mysqli_query($koneksi,"SELECT * FROM tb_simpan WHERE id_lowongan='$k[id_lowongan]' AND id_user='$a[id_user]'");
-                                                    if(mysqli_num_rows($cekcek) > 0){
-                                                        echo "<a href='aksi.php?condition=unsave&idd=$k[id_lowongan]&id=$a[id_user]&posisi=kerja' class='btn btn-outline-primary btn-sm px-3'><i style='font-size: 16px; margin-left:5px;' class='fa fa-star'></i></a>";
-                                                    }else{
-                                                        echo "<a href='aksi.php?condition=save&idd=$k[id_lowongan]&id=$a[id_user]&posisi=kerja' class='btn btn-outline-primary btn-sm px-3'><i style='font-size: 16px; margin-left:5px;' class='far fa-star'></i></a>";
-                                                    }}
-                                                    ?></div>
-                                                <li>
-                                                    <h3 class="font-weight-bold"><?= $k['posisi']; ?></h3>
-                                                </li><br>
-                                                <li>
-                                                    <div class="h6"><a href="#"
-                                                            class="text-primary h6 font-weight-bold"><?= $k['nama_perusahaan']; ?></a>
-                                                        <i class="fas fa-map-marker-alt"></i>
-                                                        <?= $k['lokasi']; ?></div>
-                                                </li><br>
-                                                <li>
-                                                    <div class="font-weight-normal">
-                                                        <?php
-                                                                        if($login !== "belum"){
-                                                                            if($k['gaji'] >= $a['gaji']  ){
-                                                                                echo "<i class='fas fa-level-up-alt text-success'></i>";
-                                                                            }else{
-                                                                                echo "<i class='fas fa-level-down-alt text-danger'></i>";
-                                                                            }
-                                                                        }
-                                                                         ?>
-                                                        <span class="text-success">IDR</span>
-                                                        <?= number_format("$k[gaji]", 0, ",", "."); ?>,-</div>
-                                                </li><br>
-
-                                                <li>
-                                                    <div>
-                                                        <?php 
-                                                                                if(strlen($k['persyaratan']) > 50){
-                                                                                    $kata = substr(nl2br($k['persyaratan']),0,50);
-                                                                                    echo "$kata...";
-                                                                                    echo "<br>";
-                                                                                    echo "<a href='detail-lowongan.php?id=$k[id_lowongan]' class='text-primary'>Tampilkan Semua</a>";    
-                                                                                }else{
-                                                                                    echo nl2br($k['persyaratan']);
-                                                                                    echo "<br>";
-                                                                                    echo "<a href='detail-lowongan.php?id=$k[id_lowongan]' class='text-primary'>Tampilkan Semua</a>";    
-                                                                                }
-                                                                                ?>
-                                                    </div>
-                                                </li><br>
+                                <div class="col-xl-12">
+                                
+                                    <div class="card">
+                                        <div class="card-block py-4">
+                                            <!-- <div class="row"> -->
+                                            <table id="tabel_kerja" class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php if( mysqli_num_rows($sql) == 0 ){
+                                                echo "Hasil Pencarian Tidak Ada";
+                                            } ?>
                                                 <?php 
-                                                                            $e = substr($k['tanggal'],5,2);
-                                                                            if($e == 12){
-                                                                                $bulan = "Desember";
-                                                                            }elseif($e == 11){
-                                                                                $bulan = "November";
-                                                                            }elseif($e == 10){
-                                                                                $bulan = "Oktober";
-                                                                            }elseif($e == 9){
-                                                                                $bulan = "September";
-                                                                            }elseif($e == 8){
-                                                                                $bulan = "Agustus";
-                                                                            }elseif($e == 7){
-                                                                                $bulan = "Juli";
-                                                                            }elseif($e == 6){
-                                                                                $bulan = "Juni";
-                                                                            }elseif($e == 5){
-                                                                                $bulan = "Mei";
-                                                                            }elseif($e == 4){
-                                                                                $bulan = "April";
-                                                                            }elseif($e == 3){
-                                                                                $bulan = "Maret";
-                                                                            }elseif($e == 2){
-                                                                                $bulan = "Februari";
-                                                                            }elseif($e == 1){
-                                                                                $bulan = "Januari";
-                                                                            }
-                                                                            $m = substr($k['tanggal'],0,4);
-                                                                            $y = substr($k['tanggal'],8,2);
-                                                                            ?>
-                                                <li>
-                                                    <div class="text-secondary">Dipublikasi kan pada tanggal
-                                                        <?php echo "$y $bulan $m"; ?></div>
-                                                </li>
-                                                <hr>
-                                            </ul>
-                                        </div>
-                                        <!-- ENDCONTENT -->
-                                        <?php } ?>
-                                        <!-- CONTENT -->
+                                                    $kerja = mysqli_query($koneksi,"SELECT * FROM tb_lowongan INNER JOIN tb_perusahaan ON tb_lowongan.id_perusahaan=tb_perusahaan.id_perusahaan ORDER BY id_lowongan DESC"); 
+                                                    while($k = mysqli_fetch_array($sql)){ ?>
+                                                        <tr>
+                                                            <td>
+                                                        <!-- CONTENT -->
+                                                        <!-- <div class="col-md-2"> -->
+                                                            <div class="text-center my-4">
+                                                                <img src="../admin/img/perusahaan/<?= $k['logo']?>" class="img-fluid"
+                                                                    alt="">
+                                                            </div>
+                                                        <!-- </div> -->
+                                                            </td>
+                                                        <!-- <div class="col-md-10"> -->
+                                                            <td>
+                                                            <ul>
+                                                                <div class="text-center float-right">
+                                                                    <?php if( $login == "belum" ){
+                                                                            echo "<a href='../loginn.php?pesan=logindulu' class='btn btn-outline-primary btn-sm px-3'><i style='font-size: 16px; margin-left:5px;' class='far fa-star'></i></a>";
+                                                                    }else{ ?>
+                                                                    <?php 
+                                                                                            
+                                                                    $cekcek = mysqli_query($koneksi,"SELECT * FROM tb_simpan WHERE id_lowongan='$k[id_lowongan]' AND id_user='$a[id_user]'");
+                                                                    if(mysqli_num_rows($cekcek) > 0){
+                                                                        echo "<a href='aksi.php?condition=unsave&idd=$k[id_lowongan]&id=$a[id_user]&posisi=kerja' class='btn btn-outline-primary btn-sm px-3'><i style='font-size: 16px; margin-left:5px;' class='fa fa-star'></i></a>";
+                                                                    }else{
+                                                                        echo "<a href='aksi.php?condition=save&idd=$k[id_lowongan]&id=$a[id_user]&posisi=kerja' class='btn btn-outline-primary btn-sm px-3'><i style='font-size: 16px; margin-left:5px;' class='far fa-star'></i></a>";
+                                                                    }}
+                                                                    ?></div>
+                                                                <li>
+                                                                    <h3 class="font-weight-bold"><?= $k['posisi']; ?></h3>
+                                                                </li><br>
+                                                                <li>
+                                                                    <div class="h6"><a href="#"
+                                                                            class="text-primary h6 font-weight-bold"><?= $k['nama_perusahaan']; ?></a>
+                                                                        <i class="fas fa-map-marker-alt"></i>
+                                                                        <?= $k['lokasi']; ?></div>
+                                                                </li><br>
+                                                                <li>
+                                                                    <div class="font-weight-normal">
+                                                                        <?php
+                                                                                        if($login !== "belum"){
+                                                                                            if($k['gaji'] >= $a['gaji']  ){
+                                                                                                echo "<i class='fas fa-level-up-alt text-success'></i>";
+                                                                                            }else{
+                                                                                                echo "<i class='fas fa-level-down-alt text-danger'></i>";
+                                                                                            }
+                                                                                        }
+                                                                                        ?>
+                                                                        <span class="text-success">IDR</span>
+                                                                        <?= number_format("$k[gaji]", 0, ",", "."); ?>,-</div>
+                                                                </li><br>
+
+                                                                <li>
+                                                                    <div>
+                                                                        <?php 
+                                                                                                if(strlen($k['persyaratan']) > 50){
+                                                                                                    $kata = substr(nl2br($k['persyaratan']),0,50);
+                                                                                                    echo "$kata...";
+                                                                                                    echo "<br>";
+                                                                                                    echo "<a href='detail-lowongan.php?id=$k[id_lowongan]' class='text-primary'>Tampilkan Semua</a>";    
+                                                                                                }else{
+                                                                                                    echo nl2br($k['persyaratan']);
+                                                                                                    echo "<br>";
+                                                                                                    echo "<a href='detail-lowongan.php?id=$k[id_lowongan]' class='text-primary'>Tampilkan Semua</a>";    
+                                                                                                }
+                                                                                                ?>
+                                                                    </div>
+                                                                </li><br>
+                                                                <?php 
+                                                                                            $e = substr($k['tanggal'],5,2);
+                                                                                            if($e == 12){
+                                                                                                $bulan = "Desember";
+                                                                                            }elseif($e == 11){
+                                                                                                $bulan = "November";
+                                                                                            }elseif($e == 10){
+                                                                                                $bulan = "Oktober";
+                                                                                            }elseif($e == 9){
+                                                                                                $bulan = "September";
+                                                                                            }elseif($e == 8){
+                                                                                                $bulan = "Agustus";
+                                                                                            }elseif($e == 7){
+                                                                                                $bulan = "Juli";
+                                                                                            }elseif($e == 6){
+                                                                                                $bulan = "Juni";
+                                                                                            }elseif($e == 5){
+                                                                                                $bulan = "Mei";
+                                                                                            }elseif($e == 4){
+                                                                                                $bulan = "April";
+                                                                                            }elseif($e == 3){
+                                                                                                $bulan = "Maret";
+                                                                                            }elseif($e == 2){
+                                                                                                $bulan = "Februari";
+                                                                                            }elseif($e == 1){
+                                                                                                $bulan = "Januari";
+                                                                                            }
+                                                                                            $m = substr($k['tanggal'],0,4);
+                                                                                            $y = substr($k['tanggal'],8,2);
+                                                                                            ?>
+                                                                <li>
+                                                                    <div class="text-secondary">Dipublikasi kan pada tanggal
+                                                                        <?php echo "$y $bulan $m"; ?></div>
+                                                                </li>
+                                                                <hr>
+                                                            </ul>
+                                                            </td>
+                                                        <!-- </div> -->
+                                                        <!-- ENDCONTENT -->
+                                                            </td>
+                                                        </tr>
+                                                <?php } ?>
+                                                <!-- CONTENT -->
+                                                <tbody>
+                                            </table>
+                                        <!-- </div> -->
                                     </div>
                                 </div>
-                            </div>
-
-                        </div>
-
+                                </div>
 
                     </div>
 
@@ -337,6 +359,7 @@ if(isset($_GET['search'] )){
     crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="assets/js/swiper.min.js"></script>
+<script src="assets/js/pagination.min.js"></script>
 <script>
     $(".select2").select2({
         placeholder: "Contoh : Garut",
@@ -365,5 +388,16 @@ const swiper = new Swiper('.swiper-container', {
     el: '.swiper-scrollbar',
   },
 });
+
+
 </script>
 <?php include 'footer.php';  ?>
+<script src="//cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+<script>
+$('#tabel_kerja').DataTable( {
+  pageLength: 10,
+  info: false,
+  sort: false,
+  lengthChange: false
+} );
+</script>

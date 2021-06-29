@@ -97,7 +97,7 @@
                                                         <div class="card-block py-4">
                                                             <div class="row">
                                                                 <?php 
-                                                                $simpan = mysqli_query($koneksi,"SELECT * FROM tb_simpan INNER JOIN tb_lowongan ON tb_simpan.id_lowongan=tb_lowongan.id_lowongan INNER JOIN tb_perusahaan ON tb_lowongan.id_perusahaan=tb_perusahaan.id_perusahaan WHERE tb_simpan.id_user='$a[id_user]'"); 
+                                                                $simpan = mysqli_query($koneksi,"SELECT * FROM tb_simpan INNER JOIN tb_lowongan ON tb_simpan.id_lowongan=tb_lowongan.id_lowongan INNER JOIN tb_posisi ON tb_posisi.id_posisi=tb_lowongan.posisi INNER JOIN tb_perusahaan ON tb_lowongan.id_perusahaan=tb_perusahaan.id_perusahaan WHERE tb_simpan.id_user='$a[id_user]'"); 
 
                                                                 while($d = mysqli_fetch_array($simpan)){
                                                                 ?>
